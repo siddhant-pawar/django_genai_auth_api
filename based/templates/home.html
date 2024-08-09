@@ -1,0 +1,98 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django App</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script defer src="{% static 'scripts.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload File or Input Text</h1>
+
+        <div class="tabs">
+            {% for tab in tabs %}
+                <button class="tab-link" onclick="openTab(event, '{{ tab.id }}')">
+                    {{ tab.title }}
+                </button>
+            {% endfor %}
+        </div>
+
+        <!-- Summarize Text Tab -->
+        <div id="SummarizeText" class="tab-content" style="display:none;">
+            <h2>Summarize Text</h2>
+            <form id="summarize-text-form">
+                <label for="text">Text to Summarize:</label>
+                <textarea name="text" id="text" cols="30" rows="10" placeholder="Enter text here..."></textarea>
+                <button type="submit">Summarize</button>
+            </form>
+            <p id="summary-result"></p>
+        </div>
+
+        <!-- Generate Image Tab -->
+        <div id="GenerateImage" class="tab-content" style="display:none;">
+            <h2>Generate Image</h2>
+            <form id="generate-image-form">
+                <label for="prompt">Image Description Prompt:</label>
+                <input type="text" name="prompt" id="prompt" placeholder="Enter prompt here...">
+                <button type="submit">Generate Image</button>
+            </form>
+            <img id="generated-image" style="display:none;" alt="Generated Image">
+        </div>
+
+        <!-- Generate Text and Video Tab -->
+        <div id="GenerateTextandVideo" class="tab-content">
+            <h2>Generate Text and Video</h2>
+            <form id="generate-text-form">
+                <label for="textprompt">Prompt:</label>
+                <textarea id="textprompt" rows="5" placeholder="Enter your prompt here..."></textarea>
+                <button type="submit">Generate</button>
+            </form>
+            <!-- Loading indicator -->
+            <div id="loading-indicator" style="display:none;">Loading...</div>
+            <!-- Container for generated text -->
+            <div id="generated-text"></div>
+            <!-- Video container -->
+            <div id="video-container" style="display:none;">
+                <video width="100%" controls>
+                    <source id="video-source" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- Upload File Tab -->
+        <div id="UploadFile" class="tab-content" style="display:none;">
+            <h2>Upload File</h2>
+            <form id="upload-file-form" enctype="multipart/form-data">
+                <label for="file">Choose a file:</label>
+                <input type="file" name="file" id="file">
+                <button type="submit">Upload and Extract</button>
+            </form>
+            <div id="file-text"></div>
+        </div>
+    </div>
+<script>
+    function openTab(evt, tabName) {
+        var i, tabContent, tabLinks;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        tabLinks = document.getElementsByClassName("tab-link");
+        for (i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    
+    // Set the default tab to open if there are tabs
+    if (document.querySelector('.tab-link')) {
+        document.querySelector('.tab-link').click();
+    }
+    
+    </script>
+
+</body>
+</html>
